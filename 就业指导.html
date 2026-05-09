@@ -5,591 +5,307 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>千帆咨询 · 职业测评系统</title>
 <style>
+:root{--primary:#0F766E;--primary-light:#14B8A6;--bg:#F0FDFA;--card:#FFF;--text:#1E293B;--sub:#64748B}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#F0FDFA;min-height:100vh}
-.nav{background:linear-gradient(135deg,#0F766E,#14B8A6);color:white;padding:20px 32px;text-align:center}
-.nav h1{font-size:1.5rem;font-weight:700}
-.nav p{font-size:0.9rem;opacity:0.9;margin-top:8px}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);min-height:100vh}
+.nav{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:20px 32px;text-align:center;box-shadow:0 2px 16px rgba(15,118,110,0.2)}
+.nav h1{font-size:1.5rem;font-weight:700}.nav p{font-size:0.9rem;opacity:0.9;margin-top:6px}
 .container{max-width:800px;margin:0 auto;padding:24px 20px}
-.menu{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px}
+/* 首页 */
+.hero{text-align:center;padding:32px 20px}
+.hero h2{font-size:1.5rem;color:var(--primary);margin-bottom:12px}
+.hero p{color:var(--sub);line-height:1.7;max-width:600px;margin:0 auto 24px}
+.about{background:var(--card);border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:24px}
+.about h3{color:var(--primary);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.about p{color:var(--sub);line-height:1.8;font-size:0.92rem}
+.menu{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 @media(max-width:600px){.menu{grid-template-columns:1fr}}
-.card{background:white;border-radius:16px;padding:28px;box-shadow:0 4px 16px rgba(0,0,0,0.06);text-align:center;cursor:pointer;transition:transform .2s,box-shadow .2s}
-.card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+.card{border-radius:16px;padding:28px;box-shadow:0 4px 16px rgba(0,0,0,0.06);text-align:center;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.card.c1{background:linear-gradient(135deg,#CCFBF1,#F0FDFA)}.card.c1:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(15,118,110,0.15)}
+.card.c2{background:linear-gradient(135deg,#EDE9FE,#F8FAFC)}.card.c2:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(109,40,217,0.12)}
+.card.c3{background:linear-gradient(135deg,#FEF3C7,#FFFBEB)}.card.c3:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(245,158,11,0.15)}
+.card.c4{background:linear-gradient(135deg,#FCE7F3,#FDF2F8)}.card.c4:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(236,72,153,0.12)}
 .card .icon{font-size:2.5rem;margin-bottom:12px}
-.card h3{font-size:1.2rem;color:#1E293B;margin-bottom:8px}
-.card p{font-size:0.88rem;color:#64748B}
-.test-box{background:white;border-radius:16px;padding:32px;box-shadow:0 4px 16px rgba(0,0,0,0.06);display:none}
-.test-box.active{display:block}
+.card h3{font-size:1.2rem;color:var(--text);margin-bottom:6px}
+.card p{font-size:0.85rem;color:var(--sub)}
+/* 测评页面 */
+.test-box,.result-box{background:var(--card);border-radius:16px;padding:32px;box-shadow:0 4px 16px rgba(0,0,0,0.06);display:none}
+.test-box.active,.result-box.active{display:block}
 .test-header{text-align:center;margin-bottom:24px}
-.test-header h2{color:#0F766E;font-size:1.4rem;margin-bottom:8px}
-.test-header p{color:#64748B;font-size:0.9rem}
+.test-header h2{color:var(--primary);font-size:1.4rem;margin-bottom:8px}
+.test-header p{color:var(--sub);font-size:0.9rem}
 .progress{background:#F1F5F9;border-radius:10px;height:8px;margin:20px 0}
-.progress-bar{height:100%;background:linear-gradient(90deg,#0F766E,#14B8A6);border-radius:10px;transition:width .3s}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:10px;transition:width .3s}
 .question{margin:24px 0}
-.question .q{font-size:1.1rem;color:#1E293B;margin-bottom:16px;font-weight:600}
+.question .q{font-size:1.1rem;color:var(--text);margin-bottom:16px;font-weight:600}
 .options{display:grid;gap:10px}
 .options label{display:flex;align-items:center;padding:14px 16px;background:#F8FAFC;border-radius:10px;cursor:pointer;transition:background .2s}
-.options label:hover{background:#F0FDFA}
-.options input{margin-right:12px}
+.options label:hover{background:var(--bg)}
+.options input{margin-right:12px;accent-color:var(--primary)}
 .nav-btns{display:flex;justify-content:space-between;margin-top:28px}
-.btn{padding:12px 28px;border-radius:10px;border:none;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity .2s}
-.btn:disabled{opacity:0.5;cursor:not-allowed}
-.btn-primary{background:linear-gradient(135deg,#0F766E,#14B8A6);color:white}
-.btn-secondary{background:white;color:#0F766E;border:2px solid #0F766E}
-.result-box{background:white;border-radius:16px;padding:32px;box-shadow:0 4px 16px rgba(0,0,0,0.06);display:none}
-.result-box.active{display:block}
-.result-box h2{text-align:center;color:#0F766E;margin-bottom:24px}
-.result-box .score{font-size:2.5rem;font-weight:800;color:#0F766E;text-align:center;margin:16px 0}
-.result-box .desc{text-align:center;color:#64748B;margin-bottom:24px}
-.result-table{width:100%;margin:24px 0;border-collapse:collapse}
-.result-table th,.result-table td{padding:12px 16px;text-align:left;border-bottom:1px solid #E2E8F0}
-.result-table th{background:#F8FAFC;font-weight:700;color:#0F766E}
-.tag{padding:4px 12px;border-radius:12px;font-size:0.8rem;font-weight:600;display:inline-block}
-.tag-1{background:#CCFBF1;color:#0F766E}.tag-2{background:#EDE9FE;color:#6D28D9}.tag-3{background:#FEE2E2;color:#991B1B}
-.submit-btn{background:linear-gradient(135deg,#0F766E,#14B8A6);color:white;border:none;padding:16px 40px;border-radius:12px;font-size:1.1rem;font-weight:700;cursor:pointer;width:100%;margin-top:24px}
-.submit-btn:hover{opacity:0.9}
-.back-btn{background:#64748B;color:white;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;margin-top:16px}
+.btn{padding:12px 28px;border-radius:10px;border:none;font-size:1rem;font-weight:600;cursor:pointer}
+.btn:disabled{opacity:0.4;cursor:not-allowed}
+.btn-pri{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff}
+.btn-sec{background:#fff;color:var(--primary);border:2px solid var(--primary)}
+.result-box h2{text-align:center;color:var(--primary);margin-bottom:20px}
+.result-box .score{font-size:2.5rem;font-weight:800;color:var(--primary);text-align:center}
+.result-box .desc{text-align:center;color:var(--sub);margin:12px 0 24px}
+.r-table{width:100%;border-collapse:collapse;margin:20px 0}
+.r-table th,.r-table td{padding:12px 16px;text-align:left;border-bottom:1px solid #E2E8F0;font-size:0.88rem}
+.r-table th{background:#F8FAFC;font-weight:700;color:var(--primary)}
+.tag{padding:3px 10px;border-radius:12px;font-size:0.78rem;font-weight:600;display:inline-block}
+.tag-1{background:#CCFBF1;color:var(--primary)}.tag-2{background:#EDE9FE;color:#6D28D9}
+.submit-btn{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border:none;padding:16px;border-radius:12px;font-size:1.05rem;font-weight:700;cursor:pointer;width:100%;margin-top:20px}
+.back-btn{background:var(--sub);color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;margin-top:12px}
 </style>
 </head>
 <body>
+
 <div class="nav">
-<h1>⛵ 千帆咨询 · 职业测评系统</h1>
-<p>专业测评 · 科学规划 · 成就未来</p>
+  <h1>⛵ 千帆咨询 · 职业测评系统</h1>
+  <p>专业测评 · 科学规划 · 成就未来</p>
 </div>
+
 <div class="container">
 
-<!-- 菜单 -->
-<div id="menu" class="menu">
-<div class="card" onclick="startTest('holland')">
-<div class="icon">🧭</div>
-<h3>霍兰德职业兴趣</h3>
-<p>60 题 · 约 10 分钟</p>
-</div>
-<div class="card" onclick="startTest('mbti')">
-<div class="icon">🔮</div>
-<h3>MBTI 性格类型</h3>
-<p>40 题 · 约 8 分钟</p>
-</div>
-<div class="card" onclick="startTest('career-anchor')">
-<div class="icon">⚓</div>
-<h3>职业锚测评</h3>
-<p>40 题 · 约 8 分钟</p>
-</div>
-<div class="card" onclick="startTest('pdp')">
-<div class="icon">🐯</div>
-<h3>PDP 特质测评</h3>
-<p>40 题 · 约 8 分钟</p>
-</div>
+<!-- 首页 -->
+<div id="home">
+  <div class="hero">
+    <h2>📋 探索你的职业方向</h2>
+    <p>选择下方测评，了解你的职业兴趣、性格特质、价值观和行为风格，为就业之路导航</p>
+  </div>
+
+  <div class="about">
+    <h3>ℹ️ 关于</h3>
+    <p><strong>千帆咨询</strong>致力于为高校学生提供专业的职业测评服务。本系统由高校专职教师设计，包含霍兰德职业兴趣、MBTI性格类型、职业锚价值观、PDP行为风格四项测评。所有测评数据仅用于教学研究，严格保护学生隐私。<br><br>如果你有任何疑问，请联系你的就业指导老师。</p>
+  </div>
+
+  <h3 style="color:var(--primary);margin-bottom:16px">📝 选择测评</h3>
+  <div class="menu">
+    <div class="card c1" onclick="startTest('holland')">
+      <div class="icon">🧭</div><h3>霍兰德职业兴趣</h3><p>60 题 · 约 10 分钟</p>
+    </div>
+    <div class="card c2" onclick="startTest('mbti')">
+      <div class="icon">🔮</div><h3>MBTI 性格类型</h3><p>40 题 · 约 8 分钟</p>
+    </div>
+    <div class="card c3" onclick="startTest('career-anchor')">
+      <div class="icon">⚓</div><h3>职业锚测评</h3><p>40 题 · 约 8 分钟</p>
+    </div>
+    <div class="card c4" onclick="startTest('pdp')">
+      <div class="icon">🐯</div><h3>PDP 特质测评</h3><p>40 题 · 约 8 分钟</p>
+    </div>
+  </div>
 </div>
 
 <!-- 测评框 -->
 <div id="testBox" class="test-box">
-<div class="test-header">
-<h2 id="testTitle"></h2>
-<p id="testDesc"></p>
-</div>
-<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
-<div id="questionBox" class="question"></div>
-<div class="nav-btns">
-<button class="btn btn-secondary" id="prevBtn" onclick="prevQ()">上一题</button>
-<button class="btn btn-primary" id="nextBtn" onclick="nextQ()">下一题</button>
-</div>
+  <div class="test-header"><h2 id="testTitle"></h2><p id="testDesc"></p></div>
+  <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+  <div id="questionBox" class="question"></div>
+  <div class="nav-btns">
+    <button class="btn btn-sec" id="prevBtn" onclick="prevQ()">上一题</button>
+    <button class="btn btn-pri" id="nextBtn" onclick="nextQ()">下一题</button>
+  </div>
 </div>
 
 <!-- 结果框 -->
 <div id="resultBox" class="result-box">
-<h2 id="resultTitle"></h2>
-<div id="resultContent"></div>
-<button class="submit-btn" onclick="submitResult()">📤 提交结果给老师</button>
-<button class="back-btn" onclick="goHome()">返回首页</button>
+  <h2 id="resultTitle"></h2>
+  <div id="resultContent"></div>
+  <button class="submit-btn" onclick="submitResult()">📤 提交结果给老师</button>
+  <button class="back-btn" onclick="goHome()">← 返回首页</button>
 </div>
 
 </div>
 
 <script>
 var API_URL = 'https://fangbamboo.pythonanywhere.com/api/submit';
-var currentTest = '';
-var currentQ = 0;
-var answers = {};
+var currentTest = '', currentQ = 0, answers = {};
 
-// 霍兰德测评数据
-const hollandData = {
-    title: '霍兰德职业兴趣测评',
-    desc: '60 题 · 请根据你的真实感受作答',
-    questions: [
-        // R 现实型 (1-10)
-        {q:'1. 我喜欢修理电器或机械',type:'R'}, {q:'2. 我喜欢动手操作工具',type:'R'},
-        {q:'3. 我喜欢户外活动',type:'R'}, {q:'4. 我喜欢组装家具',type:'R'},
-        {q:'5. 我喜欢操作机器',type:'R'}, {q:'6. 我喜欢驾驶车辆',type:'R'},
-        {q:'7. 我喜欢体育运动',type:'R'}, {q:'8. 我喜欢体力劳动',type:'R'},
-        {q:'9. 我喜欢动手制作东西',type:'R'}, {q:'10. 我喜欢实际操作',type:'R'},
-        // I 研究型 (11-20)
-        {q:'11. 我喜欢分析问题和解决问题',type:'I'}, {q:'12. 我喜欢阅读科技书籍',type:'I'},
-        {q:'13. 我喜欢思考抽象概念',type:'I'}, {q:'14. 我喜欢做实验',type:'I'},
-        {q:'15. 我喜欢研究事物原理',type:'I'}, {q:'16. 我喜欢逻辑推理',type:'I'},
-        {q:'17. 我喜欢学习新知识',type:'I'}, {q:'18. 我喜欢观察和发现',type:'I'},
-        {q:'19. 我喜欢独立思考',type:'I'}, {q:'20. 我喜欢研究复杂问题',type:'I'},
-        // A 艺术型 (21-30)
-        {q:'21. 我喜欢画画或摄影',type:'A'}, {q:'22. 我喜欢听音乐',type:'A'},
-        {q:'23. 我喜欢写文章',type:'A'}, {q:'24. 我喜欢设计东西',type:'A'},
-        {q:'25. 我喜欢表演或演讲',type:'A'}, {q:'26. 我喜欢装饰房间',type:'A'},
-        {q:'27. 我喜欢创意工作',type:'A'}, {q:'28. 我喜欢表达情感',type:'A'},
-        {q:'29. 我喜欢艺术欣赏',type:'A'}, {q:'30. 我喜欢独特的事物',type:'A'},
-        // S 社会型 (31-40)
-        {q:'31. 我喜欢帮助他人',type:'S'}, {q:'32. 我喜欢教导别人',type:'S'},
-        {q:'33. 我喜欢与人交流',type:'S'}, {q:'34. 我喜欢参加社交活动',type:'S'},
-        {q:'35. 我喜欢关心他人',type:'S'}, {q:'36. 我喜欢团队合作',type:'S'},
-        {q:'37. 我喜欢志愿服务',type:'S'}, {q:'38. 我喜欢解决他人问题',type:'S'},
-        {q:'39. 我喜欢与人合作',type:'S'}, {q:'40. 我喜欢教育他人',type:'S'},
-        // E 企业型 (41-50)
-        {q:'41. 我喜欢领导团队',type:'E'}, {q:'42. 我喜欢说服他人',type:'E'},
-        {q:'43. 我喜欢做生意',type:'E'}, {q:'44. 我喜欢竞争',type:'E'},
-        {q:'45. 我喜欢冒险',type:'E'}, {q:'46. 我喜欢管理项目',type:'E'},
-        {q:'47. 我喜欢达成目标',type:'E'}, {q:'48. 我喜欢影响他人',type:'E'},
-        {q:'49. 我喜欢承担责任',type:'E'}, {q:'50. 我喜欢创业',type:'E'},
-        // C 常规型 (51-60)
-        {q:'51. 我喜欢整理文件',type:'C'}, {q:'52. 我喜欢做计划',type:'C'},
-        {q:'53. 我喜欢按规则办事',type:'C'}, {q:'54. 我喜欢记录数据',type:'C'},
-        {q:'55. 我喜欢精确工作',type:'C'}, {q:'56. 我喜欢处理文书',type:'C'},
-        {q:'57. 我喜欢有条理',type:'C'}, {q:'58. 我喜欢遵循程序',type:'C'},
-        {q:'59. 我喜欢细节工作',type:'C'}, {q:'60. 我喜欢稳定环境',type:'C'}
-    ],
-    labels: {R:'现实型',I:'研究型',A:'艺术型',S:'社会型',E:'企业型',C:'常规型'},
-    colors: {R:'#F59E0B',I:'#6366F1',A:'#EC4899',S:'#10B981',E:'#EF4444',C:'#8B5CF6'}
-};
+// ====== 测评数据 ======
 
-// MBTI 测评数据
-const mbtiData = {
-    title: 'MBTI 性格类型测评',
-    desc: '40 题 · 请选择最符合你的选项',
-    questions: [
-        // E/I (1-10)
-        {q:'1. 在社交聚会中，我通常',type:'EI',a:'A. 主动与很多人交谈',b:'B. 只与少数熟人交流',val:'E',bval:'I'},
-        {q:'2. 工作时我倾向于',type:'EI',a:'A. 与同事合作',b:'B. 独立工作',val:'E',bval:'I'},
-        {q:'3. 思考问题时我习惯',type:'EI',a:'A. 与人讨论',b:'B. 自己思考',val:'E',bval:'I'},
-        {q:'4. 一天结束时，我感到',type:'EI',a:'A. 与人相处后精力充沛',b:'B. 独处后精力充沛',val:'E',bval:'I'},
-        {q:'5. 我更容易',type:'EI',a:'A. 认识新朋友',b:'B. 维持老朋友',val:'E',bval:'I'},
-        {q:'6. 我说话',type:'EI',a:'A. 比较多',b:'B. 比较少',val:'E',bval:'I'},
-        {q:'7. 我更喜欢',type:'EI',a:'A. 群体活动',b:'B. 单独活动',val:'E',bval:'I'},
-        {q:'8. 遇到问题时我',type:'EI',a:'A. 先说出来再想',b:'B. 先想好再说',val:'E',bval:'I'},
-        {q:'9. 我通常',type:'EI',a:'A. 主动介绍自己',b:'B. 等别人介绍',val:'E',bval:'I'},
-        {q:'10. 休息时我倾向',type:'EI',a:'A. 外出社交',b:'B. 在家休息',val:'E',bval:'I'},
-        // S/N (11-20)
-        {q:'11. 我更相信',type:'SN',a:'A. 实际经验',b:'B. 直觉判断',val:'S',bval:'N'},
-        {q:'12. 我关注',type:'SN',a:'A. 具体细节',b:'B. 整体概念',val:'S',bval:'N'},
-        {q:'13. 我喜欢',type:'SN',a:'A. 现实的事情',b:'B. 未来的可能',val:'S',bval:'N'},
-        {q:'14. 我通常',type:'SN',a:'A. 按部就班',b:'B. 灵活变通',val:'S',bval:'N'},
-        {q:'15. 我重视',type:'SN',a:'A. 事实依据',b:'B. 理论概念',val:'S',bval:'N'},
-        {q:'16. 学习时我',type:'SN',a:'A. 注重实用',b:'B. 注重原理',val:'S',bval:'N'},
-        {q:'17. 我更喜欢',type:'SN',a:'A. 明确的信息',b:'B. 模糊的暗示',val:'S',bval:'N'},
-        {q:'18. 我习惯',type:'SN',a:'A. 关注当下',b:'B. 展望未来',val:'S',bval:'N'},
-        {q:'19. 我做决定时',type:'SN',a:'A. 参考过往经验',b:'B. 考虑创新方案',val:'S',bval:'N'},
-        {q:'20. 我描述事物',type:'SN',a:'A. 具体详细',b:'B. 概括抽象',val:'S',bval:'N'},
-        // T/F (21-30)
-        {q:'21. 做决定时我更看重',type:'TF',a:'A. 逻辑分析',b:'B. 个人感受',val:'T',bval:'F'},
-        {q:'22. 我更容易',type:'TF',a:'A. 看到问题',b:'B. 看到优点',val:'T',bval:'F'},
-        {q:'23. 我倾向于',type:'TF',a:'A. 客观判断',b:'B. 主观感受',val:'T',bval:'F'},
-        {q:'24. 我说话',type:'TF',a:'A. 直接坦率',b:'B. 委婉温和',val:'T',bval:'F'},
-        {q:'25. 我重视',type:'TF',a:'A. 公平公正',b:'B. 人情关怀',val:'T',bval:'F'},
-        {q:'26. 批评时我',type:'TF',a:'A. 对事不对人',b:'B. 会考虑对方感受',val:'T',bval:'F'},
-        {q:'27. 我更喜欢',type:'TF',a:'A. 理性讨论',b:'B. 情感交流',val:'T',bval:'F'},
-        {q:'28. 解决问题时我',type:'TF',a:'A. 分析原因',b:'B. 考虑影响',val:'T',bval:'F'},
-        {q:'29. 我容易',type:'TF',a:'A. 保持冷静',b:'B. 情绪波动',val:'T',bval:'F'},
-        {q:'30. 我判断对错',type:'TF',a:'A. 按原则',b:'B. 按情境',val:'T',bval:'F'},
-        // J/P (31-40)
-        {q:'31. 我做事喜欢',type:'JP',a:'A. 提前计划',b:'B. 临时发挥',val:'J',bval:'P'},
-        {q:'32. 我更喜欢',type:'JP',a:'A. 有明确截止',b:'B. 灵活安排',val:'J',bval:'P'},
-        {q:'33. 工作时我',type:'JP',a:'A. 按部就班',b:'B. 灵活调整',val:'J',bval:'P'},
-        {q:'34. 我通常',type:'JP',a:'A. 提前完成',b:'B. 最后完成',val:'J',bval:'P'},
-        {q:'35. 我偏好',type:'JP',a:'A. 确定感',b:'B. 开放性',val:'J',bval:'P'},
-        {q:'36. 我做事',type:'JP',a:'A. 有条理',b:'B. 随性',val:'J',bval:'P'},
-        {q:'37. 我更喜欢',type:'JP',a:'A. 做决定',b:'B. 保留选择',val:'J',bval:'P'},
-        {q:'38. 我习惯',type:'JP',a:'A. 列清单',b:'B. 凭记忆',val:'J',bval:'P'},
-        {q:'39. 我做事',type:'JP',a:'A. 有始有终',b:'B. 多线进行',val:'J',bval:'P'},
-        {q:'40. 我偏好',type:'JP',a:'A. 结构化',b:'B. 自由灵活',val:'J',bval:'P'}
-    ],
-    labels: {EI:'外向 E / 内向 I',SN:'感觉 S / 直觉 N',TF:'思考 T / 情感 F',JP:'判断 J / 感知 P'}
-};
+// 霍兰德 (60题, 6类型各10题)
+const hollandData = {title:'霍兰德职业兴趣测评',desc:'60 题 · 请根据你的真实感受选出最符合的选项',questions:[
+{q:'1. 我喜欢修理电器或机械',t:'R'},{q:'2. 我喜欢动手操作工具',t:'R'},{q:'3. 我喜欢户外活动',t:'R'},{q:'4. 我喜欢组装家具或零件',t:'R'},{q:'5. 我喜欢操作机器设备',t:'R'},{q:'6. 我喜欢驾驶车辆',t:'R'},{q:'7. 我喜欢体育运动',t:'R'},{q:'8. 我喜欢体力劳动',t:'R'},{q:'9. 我喜欢动手制作东西',t:'R'},{q:'10. 我喜欢实际动手操作',t:'R'},
+{q:'11. 我喜欢分析问题和寻找答案',t:'I'},{q:'12. 我喜欢阅读科技类书籍',t:'I'},{q:'13. 我喜欢思考抽象概念',t:'I'},{q:'14. 我喜欢做实验和测试',t:'I'},{q:'15. 我喜欢研究事物的工作原理',t:'I'},{q:'16. 我喜欢进行逻辑推理',t:'I'},{q:'17. 我喜欢学习新知识',t:'I'},{q:'18. 我喜欢观察和发现规律',t:'I'},{q:'19. 我喜欢独立思考',t:'I'},{q:'20. 我喜欢研究复杂的问题',t:'I'},
+{q:'21. 我喜欢绘画或摄影',t:'A'},{q:'22. 我喜欢听音乐或演奏乐器',t:'A'},{q:'23. 我喜欢写作',t:'A'},{q:'24. 我喜欢设计东西',t:'A'},{q:'25. 我喜欢表演或演讲',t:'A'},{q:'26. 我喜欢装饰和美化环境',t:'A'},{q:'27. 我喜欢创意类工作',t:'A'},{q:'28. 我喜欢表达自己的情感和想法',t:'A'},{q:'29. 我喜欢欣赏艺术作品',t:'A'},{q:'30. 我喜欢独特有个性的事物',t:'A'},
+{q:'31. 我喜欢帮助他人',t:'S'},{q:'32. 我喜欢教导和培训别人',t:'S'},{q:'33. 我喜欢与人交流沟通',t:'S'},{q:'34. 我喜欢参加社交活动',t:'S'},{q:'35. 我喜欢关心和照顾他人',t:'S'},{q:'36. 我喜欢团队合作',t:'S'},{q:'37. 我喜欢志愿服务',t:'S'},{q:'38. 我喜欢帮助他人解决问题',t:'S'},{q:'39. 我喜欢与各种人合作',t:'S'},{q:'40. 我喜欢教育和引导他人',t:'S'},
+{q:'41. 我喜欢领导团队',t:'E'},{q:'42. 我喜欢说服和影响他人',t:'E'},{q:'43. 我喜欢商业和销售',t:'E'},{q:'44. 我喜欢竞争和比赛',t:'E'},{q:'45. 我喜欢冒险和挑战',t:'E'},{q:'46. 我喜欢管理和组织项目',t:'E'},{q:'47. 我喜欢设定并达成目标',t:'E'},{q:'48. 我喜欢影响他人决策',t:'E'},{q:'49. 我喜欢承担责任',t:'E'},{q:'50. 我喜欢创业和开拓',t:'E'},
+{q:'51. 我喜欢整理文件和资料',t:'C'},{q:'52. 我喜欢制定计划',t:'C'},{q:'53. 我喜欢按规则和流程做事',t:'C'},{q:'54. 我喜欢记录和统计数据',t:'C'},{q:'55. 我喜欢精确细致的工作',t:'C'},{q:'56. 我喜欢处理文书工作',t:'C'},{q:'57. 我喜欢有条不紊',t:'C'},{q:'58. 我喜欢遵循既定的程序',t:'C'},{q:'59. 我喜欢关注细节',t:'C'},{q:'60. 我喜欢稳定有秩序的环境',t:'C'}
+],labels:{R:'现实型',I:'研究型',A:'艺术型',S:'社会型',E:'企业型',C:'常规型'},colors:{R:'#F59E0B',I:'#6366F1',A:'#EC4899',S:'#10B981',E:'#EF4444',C:'#8B5CF6'}};
 
-// 职业锚测评数据
-const careerAnchorData = {
-    title: '职业锚测评',
-    desc: '40 题 · 揭示你的核心职业价值观',
-    questions: [
-        // 技术职能型 (1-5)
-        {q:'1. 我希望在工作中展现我的专业技能',type:'anchor',val:'技术职能'},
-        {q:'2. 成为某个领域的专家是我的目标',type:'anchor',val:'技术职能'},
-        {q:'3. 我更喜欢专业工作而非管理工作',type:'anchor',val:'技术职能'},
-        {q:'4. 我希望因专业能力被认可',type:'anchor',val:'技术职能'},
-        {q:'5. 我乐于钻研专业技术',type:'anchor',val:'技术职能'},
-        // 管理型 (6-10)
-        {q:'6. 我喜欢承担管理责任',type:'anchor',val:'管理'},
-        {q:'7. 我希望领导团队达成目标',type:'anchor',val:'管理'},
-        {q:'8. 我享受决策和协调工作',type:'anchor',val:'管理'},
-        {q:'9. 职业发展目标是晋升管理层',type:'anchor',val:'管理'},
-        {q:'10. 我喜欢整合他人工作成果',type:'anchor',val:'管理'},
-        // 自主独立型 (11-15)
-        {q:'11. 我希望自由安排工作方式',type:'anchor',val:'自主独立'},
-        {q:'12. 我不喜欢被过多约束',type:'anchor',val:'自主独立'},
-        {q:'13. 我偏好独立完成任务',type:'anchor',val:'自主独立'},
-        {q:'14. 组织规则对我来说是束缚',type:'anchor',val:'自主独立'},
-        {q:'15. 我希望按自己的节奏工作',type:'anchor',val:'自主独立'},
-        // 安全稳定型 (16-20)
-        {q:'16. 稳定的工作环境对我很重要',type:'anchor',val:'安全稳定'},
-        {q:'17. 我偏好长期稳定的职业',type:'anchor',val:'安全稳定'},
-        {q:'18. 我希望有稳定的收入保障',type:'anchor',val:'安全稳定'},
-        {q:'19. 我重视组织的福利保障',type:'anchor',val:'安全稳定'},
-        {q:'20. 我不喜欢高风险的工作',type:'anchor',val:'安全稳定'},
-        // 创业创造型 (21-25)
-        {q:'21. 我喜欢创造新事物',type:'anchor',val:'创业创造'},
-        {q:'22. 我渴望创办自己的事业',type:'anchor',val:'创业创造'},
-        {q:'23. 我喜欢挑战和冒险',type:'anchor',val:'创业创造'},
-        {q:'24. 我希望留下自己的成就',type:'anchor',val:'创业创造'},
-        {q:'25. 我不满足于按部就班',type:'anchor',val:'创业创造'},
-        // 服务奉献型 (26-30)
-        {q:'26. 我希望工作能帮助他人',type:'anchor',val:'服务奉献'},
-        {q:'27. 我重视工作的社会价值',type:'anchor',val:'服务奉献'},
-        {q:'28. 我希望让世界变得更好',type:'anchor',val:'服务奉献'},
-        {q:'29. 我乐于为他人提供服务',type:'anchor',val:'服务奉献'},
-        {q:'30. 工作的意义比报酬更重要',type:'anchor',val:'服务奉献'},
-        // 纯粹挑战型 (31-35)
-        {q:'31. 我喜欢解决难题',type:'anchor',val:'纯粹挑战'},
-        {q:'32. 挑战性工作让我兴奋',type:'anchor',val:'纯粹挑战'},
-        {q:'33. 我渴望超越自我极限',type:'anchor',val:'纯粹挑战'},
-        {q:'34. 困难的任务激励我',type:'anchor',val:'纯粹挑战'},
-        {q:'35. 我喜欢证明自己能力',type:'anchor',val:'纯粹挑战'},
-        // 生活方式型 (36-40)
-        {q:'36. 工作与生活的平衡很重要',type:'anchor',val:'生活方式'},
-        {q:'37. 我希望工作适应我的生活方式',type:'anchor',val:'生活方式'},
-        {q:'38. 家庭时间比工作更重要',type:'anchor',val:'生活方式'},
-        {q:'39. 我拒绝牺牲个人生活换工作',type:'anchor',val:'生活方式'},
-        {q:'40. 我希望灵活的工作安排',type:'anchor',val:'生活方式'}
-    ],
-    labels: {
-        '技术职能':'🔧 技术/职能型',
-        '管理':'👔 管理型',
-        '自主独立':'🕊️ 自主/独立型',
-        '安全稳定':'🛡️ 安全/稳定型',
-        '创业创造':'🚀 创业/创造型',
-        '服务奉献':'❤️ 服务/奉献型',
-        '纯粹挑战':'⚔️ 纯粹挑战型',
-        '生活方式':'🏠 生活方式型'
-    }
-};
+// MBTI (40题, 4维度各10题)
+const mbtiData = {title:'MBTI 性格类型测评',desc:'40 题 · 每题二选一，选择最符合自己的选项',questions:[
+{q:'1. 社交聚会中，我通常',t:'EI',a:'A. 主动与很多人交谈',b:'B. 只与少数熟人交流',va:'E',vb:'I'},
+{q:'2. 工作时我倾向于',t:'EI',a:'A. 与同事合作讨论',b:'B. 独立安静工作',va:'E',vb:'I'},
+{q:'3. 思考问题时我习惯',t:'EI',a:'A. 和人讨论获得灵感',b:'B. 独自思考得出结论',va:'E',vb:'I'},
+{q:'4. 经历社交后我感到',t:'EI',a:'A. 精力充沛',b:'B. 需要独处恢复',va:'E',vb:'I'},
+{q:'5. 我更容易',t:'EI',a:'A. 结识新朋友',b:'B. 维系老友谊',va:'E',vb:'I'},
+{q:'6. 在群体中我',t:'EI',a:'A. 说话比较多',b:'B. 倾听比较多',va:'E',vb:'I'},
+{q:'7. 我更偏好',t:'EI',a:'A. 群体活动',b:'B. 独自活动',va:'E',vb:'I'},
+{q:'8. 遇到问题时我',t:'EI',a:'A. 先说出来再整理',b:'B. 先想清楚再说',va:'E',vb:'I'},
+{q:'9. 在新环境中我',t:'EI',a:'A. 主动介绍自己',b:'B. 等待他人介绍',va:'E',vb:'I'},
+{q:'10. 休息时我倾向',t:'EI',a:'A. 外出社交活动',b:'B. 待在家里放松',va:'E',vb:'I'},
+{q:'11. 我更相信',t:'SN',a:'A. 实际经验和事实',b:'B. 直觉和想象',va:'S',vb:'N'},
+{q:'12. 我关注',t:'SN',a:'A. 具体细节',b:'B. 整体蓝图',va:'S',vb:'N'},
+{q:'13. 我喜欢',t:'SN',a:'A. 现实可行的事',b:'B. 未来的可能性',va:'S',vb:'N'},
+{q:'14. 工作中我',t:'SN',a:'A. 按部就班执行',b:'B. 灵活变通调整',va:'S',vb:'N'},
+{q:'15. 我重视',t:'SN',a:'A. 事实和数据',b:'B. 理论和概念',va:'S',vb:'N'},
+{q:'16. 学习时我',t:'SN',a:'A. 注重实际应用',b:'B. 注重理解原理',va:'S',vb:'N'},
+{q:'17. 我更喜欢',t:'SN',a:'A. 明确清晰的指令',b:'B. 开放自由的方向',va:'S',vb:'N'},
+{q:'18. 我的注意力通常',t:'SN',a:'A. 在当下',b:'B. 在未来',va:'S',vb:'N'},
+{q:'19. 我做决定时',t:'SN',a:'A. 参考过往经验',b:'B. 考虑创新方式',va:'S',vb:'N'},
+{q:'20. 描述事物时我',t:'SN',a:'A. 具体详细',b:'B. 概括抽象',va:'S',vb:'N'},
+{q:'21. 做决定时我更看重',t:'TF',a:'A. 逻辑和分析',b:'B. 感受和人情',va:'T',vb:'F'},
+{q:'22. 评价他人时我',t:'TF',a:'A. 直接指出问题',b:'B. 先认可再委婉说',va:'T',vb:'F'},
+{q:'23. 我更倾向',t:'TF',a:'A. 客观理性判断',b:'B. 考虑各方感受',va:'T',vb:'F'},
+{q:'24. 沟通方式上我',t:'TF',a:'A. 直接坦诚',b:'B. 委婉温和',va:'T',vb:'F'},
+{q:'25. 我重视',t:'TF',a:'A. 公平和原则',b:'B. 同理和关怀',va:'T',vb:'F'},
+{q:'26. 提出批评时我',t:'TF',a:'A. 对事不对人',b:'B. 会顾及对方感受',va:'T',vb:'F'},
+{q:'27. 我更享受',t:'TF',a:'A. 理性的讨论',b:'B. 情感的交流',va:'T',vb:'F'},
+{q:'28. 解决问题时我',t:'TF',a:'A. 先分析原由',b:'B. 先考虑对人的影响',va:'T',vb:'F'},
+{q:'29. 面临冲突时我',t:'TF',a:'A. 保持冷静应对',b:'B. 容易受情绪影响',va:'T',vb:'F'},
+{q:'30. 判断对错时我',t:'TF',a:'A. 按原则标准',b:'B. 按具体情境',va:'T',vb:'F'},
+{q:'31. 我做事喜欢',t:'JP',a:'A. 提前规划好',b:'B. 即兴应对',va:'J',vb:'P'},
+{q:'32. 面对截止日期我',t:'JP',a:'A. 早早完成',b:'B. 最后冲刺',va:'J',vb:'P'},
+{q:'33. 我更喜欢',t:'JP',a:'A. 确定的结果',b:'B. 开放的可能',va:'J',vb:'P'},
+{q:'34. 日常工作我',t:'JP',a:'A. 按计划推进',b:'B. 灵活调整',va:'J',vb:'P'},
+{q:'35. 旅行时我',t:'JP',a:'A. 提前做好攻略',b:'B. 随性走到哪算哪',va:'J',vb:'P'},
+{q:'36. 我做事风格',t:'JP',a:'A. 有条理有次序',b:'B. 随性自由',va:'J',vb:'P'},
+{q:'37. 我喜欢',t:'JP',a:'A. 做出决定',b:'B. 保持开放选项',va:'J',vb:'P'},
+{q:'38. 购物时我',t:'JP',a:'A. 列出清单按需购买',b:'B. 看到喜欢的就买',va:'J',vb:'P'},
+{q:'39. 我的桌面',t:'JP',a:'A. 整齐有序',b:'B. 随意摆放',va:'J',vb:'P'},
+{q:'40. 我偏好',t:'JP',a:'A. 结构化的生活',b:'B. 自由灵活的生活',va:'J',vb:'P'}
+],labels:{EI:'外向E / 内向I',SN:'感觉S / 直觉N',TF:'思考T / 情感F',JP:'判断J / 感知P'}};
 
-// PDP 测评数据
-const pdpData = {
-    title: 'PDP 特质测评',
-    desc: '40 题 · 了解你的行为风格',
-    questions: [
-        // 老虎型 (1-8)
-        {q:'1. 我做事果断有力',type:'pdp',val:'老虎'},
-        {q:'2. 我喜欢掌控局面',type:'pdp',val:'老虎'},
-        {q:'3. 我目标导向明确',type:'pdp',val:'老虎'},
-        {q:'4. 我敢于挑战权威',type:'pdp',val:'老虎'},
-        {q:'5. 我喜欢竞争和挑战',type:'pdp',val:'老虎'},
-        {q:'6. 我说话直接',type:'pdp',val:'老虎'},
-        {q:'7. 我行动迅速',type:'pdp',val:'老虎'},
-        {q:'8. 我喜欢做决策',type:'pdp',val:'老虎'},
-        // 孔雀型 (9-16)
-        {q:'9. 我善于表达和沟通',type:'pdp',val:'孔雀'},
-        {q:'10. 我喜欢成为焦点',type:'pdp',val:'孔雀'},
-        {q:'11. 我热情开朗',type:'pdp',val:'孔雀'},
-        {q:'12. 我善于感染他人',type:'pdp',val:'孔雀'},
-        {q:'13. 我喜欢社交活动',type:'pdp',val:'孔雀'},
-        {q:'14. 我富有感染力',type:'pdp',val:'孔雀'},
-        {q:'15. 我乐观积极',type:'pdp',val:'孔雀'},
-        {q:'16. 我善于鼓舞他人',type:'pdp',val:'孔雀'},
-        // 考拉型 (17-24)
-        {q:'17. 我性格温和',type:'pdp',val:'考拉'},
-        {q:'18. 我喜欢和谐氛围',type:'pdp',val:'考拉'},
-        {q:'19. 我耐心倾听',type:'pdp',val:'考拉'},
-        {q:'20. 我不喜欢冲突',type:'pdp',val:'考拉'},
-        {q:'21. 我做事稳重',type:'pdp',val:'考拉'},
-        {q:'22. 我善于配合他人',type:'pdp',val:'考拉'},
-        {q:'23. 我偏好稳定环境',type:'pdp',val:'考拉'},
-        {q:'24. 我乐于助人',type:'pdp',val:'考拉'},
-        // 猫头鹰型 (25-32)
-        {q:'25. 我注重细节',type:'pdp',val:'猫头鹰'},
-        {q:'26. 我追求精确',type:'pdp',val:'猫头鹰'},
-        {q:'27. 我善于分析',type:'pdp',val:'猫头鹰'},
-        {q:'28. 我讲究逻辑',type:'pdp',val:'猫头鹰'},
-        {q:'29. 我做事有条理',type:'pdp',val:'猫头鹰'},
-        {q:'30. 我重视规则',type:'pdp',val:'猫头鹰'},
-        {q:'31. 我谨慎决策',type:'pdp',val:'猫头鹰'},
-        {q:'32. 我追求完美',type:'pdp',val:'猫头鹰'},
-        // 变色龙型 (33-40)
-        {q:'33. 我适应能力强',type:'pdp',val:'变色龙'},
-        {q:'34. 我善于调整自己',type:'pdp',val:'变色龙'},
-        {q:'35. 我灵活变通',type:'pdp',val:'变色龙'},
-        {q:'36. 我善于观察环境',type:'pdp',val:'变色龙'},
-        {q:'37. 我能够融合不同风格',type:'pdp',val:'变色龙'},
-        {q:'38. 我随和易相处',type:'pdp',val:'变色龙'},
-        {q:'39. 我善于平衡各方',type:'pdp',val:'变色龙'},
-        {q:'40. 我能够适应变化',type:'pdp',val:'变色龙'}
-    ],
-    labels: {
-        '老虎':'🐯 老虎型（支配型）',
-        '孔雀':'🦚 孔雀型（表达型）',
-        '考拉':'🐨 考拉型（耐心型）',
-        '猫头鹰':'🦉 猫头鹰型（精确型）',
-        '变色龙':'🦎 变色龙型（适应型）'
-    }
-};
+// 职业锚 (40题, 8类型各5题)
+const anchorData = {title:'职业锚测评',desc:'40 题 · 请根据你的真实感受作答，了解你的核心职业价值观',questions:[
+{q:'1. 我希望在工作中展现专业技能',t:'anchor',v:'技术职能'},{q:'2. 成为领域专家是我的目标',t:'anchor',v:'技术职能'},{q:'3. 我更喜欢专业工作而非管理工作',t:'anchor',v:'技术职能'},{q:'4. 我因专业能力被认可是最大的满足',t:'anchor',v:'技术职能'},{q:'5. 我乐于持续钻研和提升专业技能',t:'anchor',v:'技术职能'},
+{q:'6. 我喜欢承担管理责任和决策权',t:'anchor',v:'管理'},{q:'7. 领导团队达成目标让我有成就感',t:'anchor',v:'管理'},{q:'8. 我享受协调各方资源完成任务',t:'anchor',v:'管理'},{q:'9. 职业发展的目标是进入管理层',t:'anchor',v:'管理'},{q:'10. 我喜欢整合和协调他人工作',t:'anchor',v:'管理'},
+{q:'11. 自由安排工作方式对我很重要',t:'anchor',v:'自主独立'},{q:'12. 过多约束让我感觉受限',t:'anchor',v:'自主独立'},{q:'13. 我更偏好独立完成任务',t:'anchor',v:'自主独立'},{q:'14. 组织规则有时让我感到束缚',t:'anchor',v:'自主独立'},{q:'15. 按自己的节奏工作让我效率更高',t:'anchor',v:'自主独立'},
+{q:'16. 稳定的工作环境对我很重要',t:'anchor',v:'安全稳定'},{q:'17. 我偏好长期稳定的职业路径',t:'anchor',v:'安全稳定'},{q:'18. 稳定的收入保障让我安心',t:'anchor',v:'安全稳定'},{q:'19. 组织的福利保障体系很重要',t:'anchor',v:'安全稳定'},{q:'20. 高风险高回报的工作不适合我',t:'anchor',v:'安全稳定'},
+{q:'21. 我喜欢创造新事物、新方法',t:'anchor',v:'创业创造'},{q:'22. 我渴望创办自己的事业',t:'anchor',v:'创业创造'},{q:'23. 挑战和冒险让我兴奋',t:'anchor',v:'创业创造'},{q:'24. 我希望留下属于自己的成就',t:'anchor',v:'创业创造'},{q:'25. 按部就班的工作让我缺乏激情',t:'anchor',v:'创业创造'},
+{q:'26. 我希望工作能帮助到他人',t:'anchor',v:'服务奉献'},{q:'27. 工作对社会的价值比薪资更重要',t:'anchor',v:'服务奉献'},{q:'28. 让世界变得更好是我的动力',t:'anchor',v:'服务奉献'},{q:'29. 服务他人让我感到充实',t:'anchor',v:'服务奉献'},{q:'30. 有意义的付出比物质回报更重要',t:'anchor',v:'服务奉献'},
+{q:'31. 解决棘手问题让我兴奋',t:'anchor',v:'纯粹挑战'},{q:'32. 具有挑战性的工作最能激励我',t:'anchor',v:'纯粹挑战'},{q:'33. 超越自我极限是我的追求',t:'anchor',v:'纯粹挑战'},{q:'34. 越困难的任务越能激发我的斗志',t:'anchor',v:'纯粹挑战'},{q:'35. 通过战胜困难证明自己',t:'anchor',v:'纯粹挑战'},
+{q:'36. 工作与生活的平衡至关重要',t:'anchor',v:'生活方式'},{q:'37. 我希望工作时间能适应我的生活',t:'anchor',v:'生活方式'},{q:'38. 家庭和个人时间优先于工作',t:'anchor',v:'生活方式'},{q:'39. 我不会为了工作牺牲个人生活',t:'anchor',v:'生活方式'},{q:'40. 灵活的工作安排对我很重要',t:'anchor',v:'生活方式'}
+],labels:{
+'技术职能':'🔧 技术/职能型','管理':'👔 管理型','自主独立':'🕊️ 自主/独立型','安全稳定':'🛡️ 安全/稳定型',
+'创业创造':'🚀 创业/创造型','服务奉献':'❤️ 服务/奉献型','纯粹挑战':'⚔️ 纯粹挑战型','生活方式':'🏠 生活方式型'
+}};
 
+// PDP (40题, 5类型各8题)
+const pdpData = {title:'PDP 特质测评',desc:'40 题 · 了解你的行为风格和沟通特质',questions:[
+{q:'1. 我做事果断、有魄力',t:'pdp',v:'老虎'},{q:'2. 我喜欢掌控并主导局面',t:'pdp',v:'老虎'},{q:'3. 我目标明确、结果导向',t:'pdp',v:'老虎'},{q:'4. 我敢于面对挑战和冲突',t:'pdp',v:'老虎'},{q:'5. 我享受竞争的过程',t:'pdp',v:'老虎'},{q:'6. 我说话直接不绕弯子',t:'pdp',v:'老虎'},{q:'7. 我行动迅速、执行力强',t:'pdp',v:'老虎'},{q:'8. 我喜欢自己做决策',t:'pdp',v:'老虎'},
+{q:'9. 我善于表达和沟通',t:'pdp',v:'孔雀'},{q:'10. 我喜欢成为人们关注的焦点',t:'pdp',v:'孔雀'},{q:'11. 我热情开朗、充满活力',t:'pdp',v:'孔雀'},{q:'12. 我善于感染和带动他人',t:'pdp',v:'孔雀'},{q:'13. 我喜欢参与各种社交活动',t:'pdp',v:'孔雀'},{q:'14. 我的情绪富有感染力',t:'pdp',v:'孔雀'},{q:'15. 我乐观积极、看事物美好面',t:'pdp',v:'孔雀'},{q:'16. 我善于鼓舞团队的士气',t:'pdp',v:'孔雀'},
+{q:'17. 我性格温和、不易发怒',t:'pdp',v:'考拉'},{q:'18. 我崇尚和谐的工作氛围',t:'pdp',v:'考拉'},{q:'19. 我善于耐心倾听他人',t:'pdp',v:'考拉'},{q:'20. 我尽量避免发生冲突',t:'pdp',v:'考拉'},{q:'21. 我做事稳重、不急不躁',t:'pdp',v:'考拉'},{q:'22. 我善于配合和支持他人',t:'pdp',v:'考拉'},{q:'23. 我偏好稳定和可预见',t:'pdp',v:'考拉'},{q:'24. 我乐于为他人提供帮助',t:'pdp',v:'考拉'},
+{q:'25. 我注重细节和准确性',t:'pdp',v:'猫头鹰'},{q:'26. 我追求精确和高质量',t:'pdp',v:'猫头鹰'},{q:'27. 我善于分析和研究',t:'pdp',v:'猫头鹰'},{q:'28. 我做决定讲究逻辑',t:'pdp',v:'猫头鹰'},{q:'29. 我做事有条理、有系统',t:'pdp',v:'猫头鹰'},{q:'30. 我重视规则和标准',t:'pdp',v:'猫头鹰'},{q:'31. 我决策前会深思熟虑',t:'pdp',v:'猫头鹰'},{q:'32. 我对工作质量要求很高',t:'pdp',v:'猫头鹰'},
+{q:'33. 我能很好地适应各种环境',t:'pdp',v:'变色龙'},{q:'34. 我善于根据情况调整自己',t:'pdp',v:'变色龙'},{q:'35. 我灵活变通、不僵化',t:'pdp',v:'变色龙'},{q:'36. 我善于观察和感知环境',t:'pdp',v:'变色龙'},{q:'37. 我能融合多种不同风格',t:'pdp',v:'变色龙'},{q:'38. 我随和好相处',t:'pdp',v:'变色龙'},{q:'39. 我善于平衡各方利益',t:'pdp',v:'变色龙'},{q:'40. 变化对我来说不是问题',t:'pdp',v:'变色龙'}
+],labels:{
+'老虎':'🐯 老虎型（支配/掌控）','孔雀':'🦚 孔雀型（表达/影响）','考拉':'🐨 考拉型（耐心/配合）','猫头鹰':'🦉 猫头鹰型（精确/分析）','变色龙':'🦎 变色龙型（适应/整合）'
+}};
+
+// ====== 测评逻辑 ======
 function startTest(type){
-    currentTest = type;
-    currentQ = 0;
-    answers = {};
-    
-    var data;
-    if(type==='holland') data = hollandData;
-    else if(type==='mbti') data = mbtiData;
-    else if(type==='career-anchor') data = careerAnchorData;
-    else if(type==='pdp') data = pdpData;
-    
-    document.getElementById('menu').style.display = 'none';
-    document.getElementById('testBox').classList.add('active');
-    document.getElementById('testTitle').textContent = data.title;
-    document.getElementById('testDesc').textContent = data.desc;
-    renderQuestion();
+  currentTest=type;currentQ=0;answers={};
+  document.getElementById('home').style.display='none';
+  document.getElementById('testBox').classList.add('active');
+  var d=getData();document.getElementById('testTitle').textContent=d.title;document.getElementById('testDesc').textContent=d.desc;
+  renderQ();window.scrollTo(0,0);
 }
 
-function renderQuestion(){
-    var data;
-    if(currentTest==='holland') data = hollandData;
-    else if(currentTest==='mbti') data = mbtiData;
-    else if(currentTest==='career-anchor') data = careerAnchorData;
-    else if(currentTest==='pdp') data = pdpData;
-    
-    var q = data.questions[currentQ];
-    var pct = ((currentQ+1)/data.questions.length*100).toFixed(0);
-    document.getElementById('progressBar').style.width = pct+'%';
-    
-    var html = '<div class="q">'+q.q+'</div><div class="options">';
-    if(currentTest==='holland' || currentTest==='career-anchor' || currentTest==='pdp'){
-        html += '<label><input type="radio" name="ans" value="1" '+(answers[currentQ]===1?'checked':'')+'> 非常不符合</label>';
-        html += '<label><input type="radio" name="ans" value="2" '+(answers[currentQ]===2?'checked':'')+'> 比较不符合</label>';
-        html += '<label><input type="radio" name="ans" value="3" '+(answers[currentQ]===3?'checked':'')+'> 一般</label>';
-        html += '<label><input type="radio" name="ans" value="4" '+(answers[currentQ]===4?'checked':'')+'> 比较符合</label>';
-        html += '<label><input type="radio" name="ans" value="5" '+(answers[currentQ]===5?'checked':'')+'> 非常符合</label>';
-    } else {
-        html += '<label><input type="radio" name="ans" value="A" '+(answers[currentQ]==='A'?'checked':'')+'> '+q.a+'</label>';
-        html += '<label><input type="radio" name="ans" value="B" '+(answers[currentQ]==='B'?'checked':'')+'> '+q.b+'</label>';
-    }
-    html += '</div>';
-    document.getElementById('questionBox').innerHTML = html;
-    
-    document.getElementById('prevBtn').disabled = currentQ===0;
-    document.getElementById('nextBtn').textContent = currentQ===data.questions.length-1?'完成测评':'下一题';
+function getData(){
+  switch(currentTest){
+    case 'holland':return hollandData;case 'mbti':return mbtiData;
+    case 'career-anchor':return anchorData;case 'pdp':return pdpData;
+  }
+}
+
+function renderQ(){
+  var d=getData(),q=d.questions[currentQ];
+  document.getElementById('progressBar').style.width=((currentQ+1)/d.questions.length*100).toFixed(0)+'%';
+  var h='<div class="q">'+q.q+'</div><div class="options">';
+  if(currentTest==='mbti'){
+    h+='<label><input type="radio" name="ans" value="A" '+(answers[currentQ]==='A'?'checked':'')+'> '+q.a+'</label>';
+    h+='<label><input type="radio" name="ans" value="B" '+(answers[currentQ]==='B'?'checked':'')+'> '+q.b+'</label>';
+  } else {
+    var opts=['非常不符合','比较不符合','一般','比较符合','非常符合'];
+    for(var i=0;i<5;i++) h+='<label><input type="radio" name="ans" value="'+(i+1)+'" '+(answers[currentQ]===i+1?'checked':'')+'> '+opts[i]+'</label>';
+  }
+  h+='</div>';document.getElementById('questionBox').innerHTML=h;
+  document.getElementById('prevBtn').disabled=currentQ===0;
+  document.getElementById('nextBtn').textContent=currentQ===d.questions.length-1?'完成测评':'下一题';
 }
 
 function nextQ(){
-    var data;
-    if(currentTest==='holland') data = hollandData;
-    else if(currentTest==='mbti') data = mbtiData;
-    else if(currentTest==='career-anchor') data = careerAnchorData;
-    else if(currentTest==='pdp') data = pdpData;
-    
-    var ans = document.querySelector('input[name="ans"]:checked');
-    if(!ans){ alert('请选择一个选项'); return; }
-    answers[currentQ] = ans.value;
-    
-    if(currentQ<data.questions.length-1){
-        currentQ++;
-        renderQuestion();
-    } else {
-        showResult();
-    }
+  var ans=document.querySelector('input[name=ans]:checked');
+  if(!ans){alert('请先选择一个选项');return}
+  answers[currentQ]=ans.value;
+  var d=getData();
+  if(currentQ<d.questions.length-1){currentQ++;renderQ();if(currentQ%5===0)window.scrollTo(0,100)}
+  else showResult();
 }
-
-function prevQ(){
-    if(currentQ>0){
-        currentQ--;
-        renderQuestion();
-    }
-}
+function prevQ(){if(currentQ>0){currentQ--;renderQ()}}
 
 function showResult(){
-    var data, scores = {}, code = '';
-    
-    if(currentTest==='holland'){
-        scores = {R:0,I:0,A:0,S:0,E:0,C:0};
-        hollandData.questions.forEach(function(q,i){
-            scores[q.type] += parseInt(answers[i])||0;
-        });
-        var arr = Object.entries(scores).sort(function(a,b){return b[1]-a[1]});
-        code = arr.slice(0,3).map(function(x){return x[0]}).join('');
-        
-        document.getElementById('resultTitle').textContent = '你的霍兰德职业代码：'+code;
-        var html = '<p class="score">'+code+'</p><p class="desc">主要职业倾向</p>';
-        html += '<table class="result-table"><tr><th>类型</th><th>得分</th><th>说明</th></tr>';
-        arr.forEach(function(x){
-            html += '<tr><td><span class="tag tag-1">'+hollandData.labels[x[0]]+'</span></td><td>'+x[1]+'</td><td>'+getHollandDesc(x[0])+'</td></tr>';
-        });
-        html += '</table>';
-        document.getElementById('resultContent').innerHTML = html;
-        
-    } else if(currentTest==='mbti'){
-        var dims = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
-        mbtiData.questions.forEach(function(q,i){
-            var val = answers[i]==='A'?q.val:q.bval;
-            dims[val]++;
-        });
-        code = (dims.E>=dims.I?'E':'I')+(dims.S>=dims.N?'S':'N')+(dims.T>=dims.F?'T':'F')+(dims.J>=dims.P?'J':'P');
-        
-        document.getElementById('resultTitle').textContent = '你的 MBTI 类型：'+code;
-        var html = '<p class="score">'+code+'</p><p class="desc">性格类型代码</p>';
-        html += '<table class="result-table"><tr><th>维度</th><th>倾向</th><th>比例</th></tr>';
-        var pairs = [['E','I'],['S','N'],['T','F'],['J','P']];
-        var labels = {E:'外向',I:'内向',S:'感觉',N:'直觉',T:'思考',F:'情感',J:'判断',P:'感知'};
-        pairs.forEach(function(p){
-            var total = dims[p[0]]+dims[p[1]];
-            html += '<tr><td>'+mbtiData.labels[p[0]+p[1]]+'</td><td>'+(dims[p[0]]>=dims[p[1]]?labels[p[0]]:labels[p[1]])+'</td><td>'+Math.round(dims[p[0]]/total*100)+'% : '+Math.round(dims[p[1]]/total*100)+'%</td></tr>';
-        });
-        html += '</table>';
-        document.getElementById('resultContent').innerHTML = html;
-        
-    } else if(currentTest==='career-anchor'){
-        var anchors = {'技术职能':0,'管理':0,'自主独立':0,'安全稳定':0,'创业创造':0,'服务奉献':0,'纯粹挑战':0,'生活方式':0};
-        careerAnchorData.questions.forEach(function(q,i){
-            anchors[q.val] += parseInt(answers[i])||0;
-        });
-        var arr = Object.entries(anchors).sort(function(a,b){return b[1]-a[1]});
-        code = arr[0][0];
-        
-        document.getElementById('resultTitle').textContent = '你的职业锚：'+careerAnchorData.labels[code];
-        var html = '<p class="score">'+careerAnchorData.labels[code].split(' ')[1]+'</p><p class="desc">核心职业价值观</p>';
-        html += '<table class="result-table"><tr><th>职业锚</th><th>得分</th><th>说明</th></tr>';
-        arr.forEach(function(x){
-            html += '<tr><td><span class="tag tag-1">'+careerAnchorData.labels[x[0]]+'</span></td><td>'+x[1]+'</td><td>'+getAnchorDesc(x[0])+'</td></tr>';
-        });
-        html += '</table>';
-        document.getElementById('resultContent').innerHTML = html;
-        
-    } else if(currentTest==='pdp'){
-        var pdps = {'老虎':0,'孔雀':0,'考拉':0,'猫头鹰':0,'变色龙':0};
-        pdpData.questions.forEach(function(q,i){
-            pdps[q.val] += parseInt(answers[i])||0;
-        });
-        var arr = Object.entries(pdps).sort(function(a,b){return b[1]-a[1]});
-        code = arr[0][0];
-        
-        document.getElementById('resultTitle').textContent = '你的 PDP 特质：'+pdpData.labels[code];
-        var html = '<p class="score">'+pdpData.labels[code].split(' ')[1]+'</p><p class="desc">主导行为风格</p>';
-        html += '<table class="result-table"><tr><th>特质</th><th>得分</th><th>说明</th></tr>';
-        arr.forEach(function(x){
-            html += '<tr><td><span class="tag tag-1">'+pdpData.labels[x[0]]+'</span></td><td>'+x[1]+'</td><td>'+getPdpDesc(x[0])+'</td></tr>';
-        });
-        html += '</table>';
-        document.getElementById('resultContent').innerHTML = html;
-    }
-    
-    document.getElementById('testBox').style.display = 'none';
-    document.getElementById('resultBox').classList.add('active');
+  document.getElementById('testBox').classList.remove('active');
+  document.getElementById('resultBox').classList.add('active');window.scrollTo(0,0);
+  var sc={},code='';
+  if(currentTest==='holland'){
+    sc={R:0,I:0,A:0,S:0,E:0,C:0};
+    hollandData.questions.forEach(function(q,i){sc[q.t]+=parseInt(answers[i])||0});
+    var arr=Object.entries(sc).sort(function(a,b){return b[1]-a[1]});
+    code=arr.slice(0,3).map(function(x){return x[0]}).join('');
+    document.getElementById('resultTitle').textContent='你的霍兰德职业代码：'+code;
+    var h='<p class="score">'+code+'</p><p class="desc">前三个最高类型组成你的职业代码</p>';
+    h+='<table class="r-table"><tr><th>类型</th><th>得分</th><th>适合方向</th></tr>';
+    arr.forEach(function(x){h+='<tr><td><span class="tag tag-1">'+hollandData.labels[x[0]]+'</span></td><td>'+x[1]+'</td><td style="font-size:0.82rem;color:#64748B">'+gHD(x[0])+'</td></tr>'});
+    h+='</table>';document.getElementById('resultContent').innerHTML=h;
+  } else if(currentTest==='mbti'){
+    var ds={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+    mbtiData.questions.forEach(function(q,i){var v=answers[i]==='A'?q.va:q.vb;ds[v]++});
+    code=(ds.E>=ds.I?'E':'I')+(ds.S>=ds.N?'S':'N')+(ds.T>=ds.F?'T':'F')+(ds.J>=ds.P?'J':'P');
+    sc=ds;document.getElementById('resultTitle').textContent='你的MBTI类型：'+code;
+    var h='<p class="score">'+code+'</p><p class="desc">四个维度的组合构成了你的性格类型</p>';
+    h+='<table class="r-table"><tr><th>维度</th><th>你的倾向</th><th>比例</th></tr>';
+    var ps=[['E','I'],['S','N'],['T','F'],['J','P']],lbs={E:'外向',I:'内向',S:'感觉',N:'直觉',T:'思考',F:'情感',J:'判断',P:'感知'};
+    ps.forEach(function(p){var t=ds[p[0]]+ds[p[1]];h+='<tr><td>'+mbtiData.labels[p[0]+p[1]]+'</td><td><strong>'+(ds[p[0]]>=ds[p[1]]?lbs[p[0]]:lbs[p[1]])+'</strong></td><td>'+Math.round(ds[p[0]]/t*100)+'% : '+Math.round(ds[p[1]]/t*100)+'%</td></tr>'});
+    h+='</table>';document.getElementById('resultContent').innerHTML=h;
+  } else if(currentTest==='career-anchor'){
+    var an={};anchorData.questions.forEach(function(q,i){an[q.v]=(an[q.v]||0)+parseInt(answers[i])||0});
+    sc=an;var arr=Object.entries(an).sort(function(a,b){return b[1]-a[1]});code=arr[0][0];
+    document.getElementById('resultTitle').textContent='你的职业锚：'+anchorData.labels[code];
+    var h='<p class="score">'+anchorData.labels[code].split(' ')[1]+'</p><p class="desc">排名第一的即是你最核心的职业价值观</p>';
+    h+='<table class="r-table"><tr><th>职业锚</th><th>得分</th><th>含义</th></tr>';
+    arr.forEach(function(x){h+='<tr><td><span class="tag tag-1">'+anchorData.labels[x[0]]+'</span></td><td>'+x[1]+'</td><td style="font-size:0.82rem;color:#64748B">'+gAD(x[0])+'</td></tr>'});
+    h+='</table>';document.getElementById('resultContent').innerHTML=h;
+  } else if(currentTest==='pdp'){
+    var ps={};pdpData.questions.forEach(function(q,i){ps[q.v]=(ps[q.v]||0)+parseInt(answers[i])||0});
+    sc=ps;var arr=Object.entries(ps).sort(function(a,b){return b[1]-a[1]});code=arr[0][0];
+    document.getElementById('resultTitle').textContent='你的PDP特质：'+pdpData.labels[code];
+    var h='<p class="score">'+pdpData.labels[code].split(' ')[1]+'</p><p class="desc">得分最高的就是你最突出的行为风格</p>';
+    h+='<table class="r-table"><tr><th>特质</th><th>得分</th><th>风格特点</th></tr>';
+    arr.forEach(function(x){h+='<tr><td><span class="tag tag-1">'+pdpData.labels[x[0]]+'</span></td><td>'+x[1]+'</td><td style="font-size:0.82rem;color:#64748B">'+gPD(x[0])+'</td></tr>'});
+    h+='</table>';document.getElementById('resultContent').innerHTML=h;
+  }
 }
 
-function getHollandDesc(type){
-    var d = {
-        R:'喜欢动手操作，适合技术、机械、户外工作',
-        I:'喜欢分析研究，适合科研、技术、分析工作',
-        A:'喜欢创意表达，适合艺术、设计、媒体工作',
-        S:'喜欢帮助他人，适合教育、咨询、服务工作',
-        E:'喜欢领导影响，适合管理、销售、创业',
-        C:'喜欢规则有序，适合行政、财务、文书工作'
-    };
-    return d[type]||'';
-}
-
-function getAnchorDesc(type){
-    var d = {
-        '技术职能':'追求专业精通，希望在特定领域成为专家',
-        '管理':'追求管理责任，希望整合他人工作成果',
-        '自主独立':'追求工作自由，不希望被过多约束',
-        '安全稳定':'追求稳定保障，偏好长期稳定的职业',
-        '创业创造':'追求创新创造，渴望创办自己的事业',
-        '服务奉献':'追求社会价值，希望工作能帮助他人',
-        '纯粹挑战':'追求难题解决，渴望超越自我极限',
-        '生活方式':'追求工作生活平衡，希望工作适应个人生活'
-    };
-    return d[type]||'';
-}
-
-function getPdpDesc(type){
-    var d = {
-        '老虎':'果断有力，目标导向，喜欢掌控和挑战',
-        '孔雀':'热情开朗，善于表达，喜欢社交和影响他人',
-        '考拉':'温和耐心，善于配合，偏好稳定和和谐',
-        '猫头鹰':'注重细节，追求精确，讲究逻辑和规则',
-        '变色龙':'适应力强，灵活变通，善于平衡各方'
-    };
-    return d[type]||'';
-}
+function gHD(t){var m={R:'动手操作，适合技术、工程、户外类工作',I:'分析研究，适合科研、技术、数据分析类工作',A:'创意表达，适合艺术、设计、媒体类工作',S:'助人为乐，适合教育、咨询、社会服务类工作',E:'领导管理，适合管理、销售、创业类工作',C:'规则有序，适合行政、财务、文书类工作'};return m[t]||''}
+function gAD(t){var m={'技术职能':'追求专业精通，希望在特定领域深耕成为专家','管理':'追求全面管理，希望整合、协调、领导他人','自主独立':'追求工作自由，不喜欢被规则和组织过多约束','安全稳定':'追求稳定保障，偏好长期可预期的职业环境','创业创造':'追求创新突破，渴望开创属于自己的事业','服务奉献':'追求社会价值，通过帮助他人获得成就感','纯粹挑战':'追求克服困难，享受解决高难度问题的过程','生活方式':'追求工作与生活的平衡，工作要服务于人生'};return m[t]||''}
+function gPD(t){var m={'老虎':'果断有力，目标导向，喜欢掌控局面和迎接挑战','孔雀':'热情开朗，善于表达，喜欢影响他人和社交互动','考拉':'温和耐心，注重和谐，善于配合和支持团队','猫头鹰':'注重细节，追求精确，讲求逻辑和质量标准','变色龙':'适应力强，灵活变通，善于融入不同环境'};return m[t]||''}
 
 function submitResult(){
-    var data, scores = {}, code = '';
-    
-    if(currentTest==='holland'){
-        scores = {R:0,I:0,A:0,S:0,E:0,C:0};
-        hollandData.questions.forEach(function(q,i){
-            scores[q.type] += parseInt(answers[i])||0;
-        });
-        var arr = Object.entries(scores).sort(function(a,b){return b[1]-a[1]});
-        code = arr.slice(0,3).map(function(x){return x[0]}).join('');
-        
-    } else if(currentTest==='mbti'){
-        var dims = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
-        mbtiData.questions.forEach(function(q,i){
-            var val = answers[i]==='A'?q.val:q.bval;
-            dims[val]++;
-        });
-        code = (dims.E>=dims.I?'E':'I')+(dims.S>=dims.N?'S':'N')+(dims.T>=dims.F?'T':'F')+(dims.J>=dims.P?'J':'P');
-        scores = dims;
-        
-    } else if(currentTest==='career-anchor'){
-        var anchors = {'技术职能':0,'管理':0,'自主独立':0,'安全稳定':0,'创业创造':0,'服务奉献':0,'纯粹挑战':0,'生活方式':0};
-        careerAnchorData.questions.forEach(function(q,i){
-            anchors[q.val] += parseInt(answers[i])||0;
-        });
-        var arr = Object.entries(anchors).sort(function(a,b){return b[1]-a[1]});
-        code = arr[0][0];
-        scores = anchors;
-        
-    } else if(currentTest==='pdp'){
-        var pdps = {'老虎':0,'孔雀':0,'考拉':0,'猫头鹰':0,'变色龙':0};
-        pdpData.questions.forEach(function(q,i){
-            pdps[q.val] += parseInt(answers[i])||0;
-        });
-        var arr = Object.entries(pdps).sort(function(a,b){return b[1]-a[1]});
-        code = arr[0][0];
-        scores = pdps;
-    }
-    
-    var payload = {
-        type: currentTest==='holland'?'holland':currentTest==='mbti'?'mbti':currentTest,
-        code: code,
-        scores: scores,
-        timestamp: new Date().toISOString()
-    };
-    
-    fetch(API_URL, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(payload)
-    }).then(function(r){
-        if(r.ok){
-            alert('✅ 提交成功！老师可以看到你的测评结果。');
-        } else {
-            alert('❌ 提交失败，请重试或联系老师。');
-        }
-    }).catch(function(e){
-        alert('❌ 网络错误，请检查网络后重试。');
-    });
+  var d=getData(),sc={},code='';
+  if(currentTest==='holland'){sc={R:0,I:0,A:0,S:0,E:0,C:0};hollandData.questions.forEach(function(q,i){sc[q.t]+=parseInt(answers[i])||0});code=Object.entries(sc).sort(function(a,b){return b[1]-a[1]}).slice(0,3).map(function(x){return x[0]}).join('')}
+  else if(currentTest==='mbti'){var ds={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};mbtiData.questions.forEach(function(q,i){var v=answers[i]==='A'?q.va:q.vb;ds[v]++});sc=ds;code=(ds.E>=ds.I?'E':'I')+(ds.S>=ds.N?'S':'N')+(ds.T>=ds.F?'T':'F')+(ds.J>=ds.P?'J':'P')}
+  else if(currentTest==='career-anchor'){var an={};anchorData.questions.forEach(function(q,i){an[q.v]=(an[q.v]||0)+parseInt(answers[i])||0});sc=an;code=Object.entries(an).sort(function(a,b){return b[1]-a[1]})[0][0]}
+  else{var ps={};pdpData.questions.forEach(function(q,i){ps[q.v]=(ps[q.v]||0)+parseInt(answers[i])||0});sc=ps;code=Object.entries(ps).sort(function(a,b){return b[1]-a[1]})[0][0]}
+  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:currentTest==='holland'?'holland':currentTest==='mbti'?'mbti':currentTest,code:code,scores:sc,timestamp:new Date().toISOString()})})
+  .then(function(r){alert(r.ok?'✅ 提交成功！老师可以看到你的测评结果。':'❌ 提交失败，请重试')}).catch(function(){alert('❌ 网络错误，请稍后重试')});
 }
 
 function goHome(){
-    document.getElementById('resultBox').classList.remove('active');
-    document.getElementById('menu').style.display = 'grid';
+  document.getElementById('resultBox').classList.remove('active');
+  document.getElementById('home').style.display='block';window.scrollTo(0,0);
 }
 </script>
 </body>
