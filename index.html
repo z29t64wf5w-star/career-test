@@ -684,6 +684,8 @@ function hSubmit() {
         ${sorted.slice(0,3).map(([t],i)=>{const info=ti[t];return`<div style="margin-bottom:${i<2?'16px':'0'};padding:16px;background:white;border-radius:10px;"><div style="font-weight:700;margin-bottom:6px;">${info.icon} ${info.name}型发展建议：</div><div style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;">${info.advice}</div></div>`;}).join('')}
     </div>
     <div style="text-align:center;margin-top:28px;">
+        <button class="btn" style="background:linear-gradient(135deg,#F59E0B,#EF4444);color:white;padding:14px 36px;border-radius:12px;border:none;font-size:1rem;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(245,158,11,0.3);" onclick="submitResult('holland','${code}',{${sorted.map(s=>s[0]+':'+s[1]).join(',')}})">📤 提交结果给老师</button>
+        <br><br>
         <button class="btn btn-primary" onclick="resetHUI();document.getElementById('holland-intro').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});">🔄 重新测评</button>
         <button class="btn btn-secondary" style="margin-left:12px;" onclick="showTab('home')">🏠 返回首页</button>
     </div>`;
@@ -868,8 +870,29 @@ function mSubmit() {
     rDiv.innerHTML += '<div class="detail-section fade-in"><h3>四维度解析</h3><div class="detail-grid">' + dimDetailHTML + '</div></div>';
     rDiv.innerHTML += '<div class="detail-section fade-in"><h3>适合职业方向</h3><div style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:10px;">' + code + ' 类型适合的职业：</div><div class="rec-tags">' + jobsTags + '</div></div>';
     rDiv.innerHTML += '<div class="detail-section fade-in" style="background:linear-gradient(135deg,#EDE9FE,#FAF5FF);"><h3>成长建议</h3><div style="padding:16px;background:white;border-radius:10px;"><div style="font-weight:700;margin-bottom:6px;">给 ' + code + ' 的发展建议：</div><div style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;">' + info.advice + '</div><div style="margin-top:8px;"><strong>性格特质：</strong>' + info.traits.join('、') + '</div></div></div>';
-    rDiv.innerHTML += '<div style="text-align:center;margin-top:28px;"><button class="btn btn-accent" onclick="resetMUI();document.getElementById(\'mbti-intro\').classList.remove(\'hidden\');window.scrollTo({top:0,behavior:\'smooth\'});">重新测评</button><button class="btn btn-secondary" style="margin-left:12px;" onclick="showTab(\'home\')">返回首页</button></div>';
+    rDiv.innerHTML += '<div style="text-align:center;margin-top:28px;"><button class="btn" style="background:linear-gradient(135deg,#F59E0B,#EF4444);color:white;padding:14px 36px;border-radius:12px;border:none;font-size:1rem;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(245,158,11,0.3);" onclick="submitResult(\'mbti\',\''+code+'\',{'+Object.keys(dims).map(function(k){return k+':'+dims[k]}).join(',')+'})">📤 提交结果给老师</button><br><br><button class="btn btn-accent" onclick="resetMUI();document.getElementById(\'mbti-intro\').classList.remove(\'hidden\');window.scrollTo({top:0,behavior:\'smooth\'});">重新测评</button><button class="btn btn-secondary" style="margin-left:12px;" onclick="showTab(\'home\')">返回首页</button></div>';
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 数据提交
+var API_URL = 'https://fangbamboo.pythonanywhere.com/api/submit';
+
+function submitResult(type, code, scores) {
+    var btn = event.target;
+    btn.textContent = '提交中...';
+    btn.disabled = true;
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({type: type, code: code, scores: scores, timestamp: new Date().toISOString()})
+    }).then(function(r){ return r.json(); })
+    .then(function(d){
+        if(d.ok){ btn.textContent = '已提交'; btn.style.background='#10B981'; }
+        else { btn.textContent = '提交失败，重试'; btn.disabled = false; }
+    }).catch(function(e){
+        btn.textContent = '网络错误，重试';
+        btn.disabled = false;
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() { showTab('home'); });
